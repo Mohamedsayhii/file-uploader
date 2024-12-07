@@ -1,0 +1,1 @@
+Personal project where I build a stripped down version of Google Drive using nodeJS, express, postgreSQL, EJS, express-validator for data handling and form validation, passportJS for authentication, and Prisma ORM. 
