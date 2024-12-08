@@ -35,4 +35,8 @@ app.use(
 require('./config/passport');
 app.use(passport.session());
 
+const indexRouter = require('./routers/indexRouter');
+
+app.use('/', indexRouter);
+
 app.listen(3000, console.log('express server is listening on port 3000'));
