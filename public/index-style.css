@@ -7,12 +7,22 @@
 	height: 90%;
 }
 
+.slogan {
+	padding: 1rem;
+	text-align: center;
+}
+
 .slogan h1 {
 	color: green;
 }
 
 .slogan h3 {
 	font-style: italic;
+}
+
+.errors {
+	position: absolute;
+	top: 23%;
 }
 
 .form-field {
