@@ -1,0 +1,49 @@
+.index-main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10rem;
+	height: 90%;
+}
+
+.slogan h1 {
+	color: green;
+}
+
+.slogan h3 {
+	font-style: italic;
+}
+
+.form-field {
+	display: flex;
+	flex-direction: column;
+	font-weight: 700;
+	gap: 1rem;
+}
+
+.form-field label {
+	font-size: 1.7rem;
+}
+
+.form-field input {
+	border: none;
+	border-radius: 1rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+form button {
+	width: 100%;
+	padding: 0.5rem;
+	border-radius: 1rem;
+	border: none;
+	background-color: white;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+form button:hover {
+	background-color: green;
+	color: white;
+}

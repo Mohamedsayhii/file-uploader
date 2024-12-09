@@ -4,10 +4,28 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="style.css" />
-		<title>Login</title>
+		<link rel="stylesheet" href="index-style.css" />
+		<link rel="icon" href="file-icon.svg" type="image/x-icon" />
+		<title>Login - File Uploader</title>
 	</head>
 	<body>
-		<h2>Store and share files online</h2>
-		<button>Sign In</button>
+		<div class="index-main">
+			<div class="slogan">
+				<h1>Store and share files online.</h1>
+				<h3>Your Personal Drive.</h3>
+			</div>
+			<form action="/" method="post">
+				<div class="form-field">
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username" required />
+				</div>
+				<div class="form-field">
+					<label for="password">Password</label>
+					<input type="password" name="password" id="password" />
+				</div>
+				<button>Log In</button>
+			</form>
+			<p>Don't have an account yet? <a href="/signup">Sign Up</a></p>
+		</div>
 	</body>
 </html>
