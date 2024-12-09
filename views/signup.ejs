@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="index-style.css" />
+		<link rel="icon" href="file-icon.svg" type="image/x-icon" />
+		<title>Login - File Uploader</title>
+	</head>
+	<body>
+		<div class="index-main">
+			<div class="slogan">
+				<h1>Create your personal space.</h1>
+				<h3>Now or never.</h3>
+			</div>
+			<form action="/signup" method="post">
+				<div class="form-field">
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username" required />
+				</div>
+				<div class="form-field">
+					<label for="password">Password</label>
+					<input type="password" name="password" id="password" />
+				</div>
+				<div class="form-field">
+					<label for="confirmPassword">Confirm Password</label>
+					<input
+						type="password"
+						name="confirmPassword"
+						id="confirmPassword"
+					/>
+				</div>
+				<button>Sign Up</button>
+			</form>
+			<p>Already have an account? <a href="/">Log In</a></p>
+		</div>
+	</body>
+</html>
