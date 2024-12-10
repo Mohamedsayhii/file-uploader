@@ -1,3 +1,4 @@
+const passport = require('passport');
 const db = require('../database/queries');
 const { body, validationResult } = require('express-validator');
 
@@ -29,7 +30,11 @@ const validateSignup = [
 ];
 
 exports.getLoginPage = (req, res) => {
-	res.render('login');
+	const { messages } = req.session;
+
+	res.render('login', {
+		errors: messages.length > 0 ? [{ msg: messages.pop() }] : [],
+	});
 };
 
 exports.getSignupPage = (req, res) => {
@@ -49,3 +54,9 @@ exports.postSignup = [
 		res.redirect('/');
 	},
 ];
+
+exports.postLogin = passport.authenticate('local', {
+	successRedirect: '/home',
+	failureRedirect: '/',
+	failureMessage: true,
+});
