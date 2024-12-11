@@ -33,7 +33,8 @@ exports.getLoginPage = (req, res) => {
 	const { messages } = req.session;
 
 	res.render('login', {
-		errors: messages.length > 0 ? [{ msg: messages.pop() }] : [],
+		errors:
+			messages && messages.length > 0 ? [{ msg: messages.pop() }] : [],
 	});
 };
 
