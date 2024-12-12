@@ -5,9 +5,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="file-icon.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="homepage.css" />
 		<title>Home - File Uploader</title>
 	</head>
 	<body>
-		<%- include('navbar') %> <%- include('footer') %>
+		<%- include('navbar') %>
+		<main>
+			<div class="sidebar">
+				<button>Create Folder</button>
+			</div>
+			<div class="content">
+				<button>Upload File</button>
+			</div>
+		</main>
+		<%- include('footer') %>
 	</body>
 </html>

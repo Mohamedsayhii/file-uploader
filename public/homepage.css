@@ -1,0 +1,25 @@
+main {
+	display: flex;
+	flex: 1;
+}
+
+.sidebar,
+.content {
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+}
+
+.sidebar {
+	flex: 1;
+	border-right: 1rem solid green;
+}
+
+.content {
+	flex: 6;
+}
+
+.content button {
+	width: 50%;
+	align-self: center;
+}
