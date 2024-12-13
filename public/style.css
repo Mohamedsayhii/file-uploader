@@ -33,6 +33,7 @@ nav {
 
 nav h1 {
 	color: white;
+	font-size: 5rem;
 }
 
 .nav-buttons {
@@ -41,8 +42,7 @@ nav h1 {
 }
 
 button {
-	width: 100%;
-	padding: 0.5rem;
+	padding: 1rem 2rem;
 	border-radius: 1.5rem;
 	border: none;
 	background-color: white;
@@ -52,10 +52,6 @@ button {
 
 button:hover {
 	color: green;
-}
-
-nav button {
-	padding: 1rem;
 }
 
 footer {

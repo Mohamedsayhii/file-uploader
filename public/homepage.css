@@ -15,11 +15,17 @@ main {
 	border-right: 1rem solid green;
 }
 
-.content {
-	flex: 6;
+.sidebar-header {
+	text-align: center;
+	padding-bottom: 0.5rem;
+	border-bottom: 3px solid black;
 }
 
-.content button {
-	width: 50%;
-	align-self: center;
+.content {
+	flex: 10;
+}
+
+.content-header {
+	padding-bottom: 0.5rem;
+	border-bottom: 3px solid black;
 }
