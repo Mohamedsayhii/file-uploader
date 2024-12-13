@@ -22,6 +22,8 @@
 				</div>
 			</div>
 		</main>
-		<%- include('footer') %>
+		<% if (locals.showModal) { %> <% if (showModal === 'folder') { %> <%-
+		include('folder-form') %> <% } else if (showModal === 'file') { %> <%-
+		include('file-form') %> <% } %> <% }%> <%- include('footer') %>
 	</body>
 </html>
