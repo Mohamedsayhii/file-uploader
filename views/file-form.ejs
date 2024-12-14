@@ -3,21 +3,20 @@
 <link rel="stylesheet" href="/index-style.css" />
 <div class="modal">
 	<div class="modal-content">
-		<form action="/home/createfolder" method="post">
+		<form action="/home/uploadfile" method="post">
 			<div class="form-field">
 				<label
-					for="foldername"
+					for="filename"
 					style="
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
 					"
-					>Folder Name
+					>File Name
 					<a href="/home">
 						<span class="close">&times;</span>
 					</a>
 				</label>
-				<input type="text" name="foldername" id="foldername" required />
 				<button type="submit">Create</button>
 			</div>
 		</form>
