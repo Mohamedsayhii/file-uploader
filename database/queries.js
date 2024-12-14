@@ -33,4 +33,37 @@ const getUserById = async (id) => {
 	return user;
 };
 
-module.exports = { createUser, getUser, getUserById };
+const getAllFolders = async (userId) => {
+	const folders = await prisma.folder.findMany({
+		where: {
+			userId: userId,
+		},
+	});
+	return folders;
+};
+
+const createFolder = async (folderName, userId) => {
+	await prisma.folder.create({
+		data: {
+			name: folderName,
+			userId: userId,
+		},
+	});
+};
+
+const deleteFolder = async (folderName) => {
+	await prisma.folder.delete({
+		where: {
+			name: folderName,
+		},
+	});
+};
+
+module.exports = {
+	createUser,
+	getUser,
+	getUserById,
+	getAllFolders,
+	createFolder,
+	deleteFolder,
+};

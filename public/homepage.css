@@ -17,6 +17,31 @@ main {
 
 .sidebar-header {
 	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.folders {
+	display: flex;
+	flex-direction: column;
+}
+
+.folder {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 2rem;
+}
+
+.folder button {
+	padding: 0;
+	background-color: initial;
+}
+
+.folder svg {
+	height: 3rem;
+}
+
+.folder svg:hover {
+	fill: red;
 }
 
 .content {
