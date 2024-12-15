@@ -3,7 +3,11 @@
 <link rel="stylesheet" href="/index-style.css" />
 <div class="modal">
 	<div class="modal-content">
-		<form action="/home/uploadfile" method="post">
+		<form
+			action="/home/uploadfile"
+			method="post"
+			enctype="multipart/form-data"
+		>
 			<div class="form-field">
 				<label
 					for="filename"
@@ -17,7 +21,8 @@
 						<span class="close">&times;</span>
 					</a>
 				</label>
-				<button type="submit">Create</button>
+				<input type="file" name="uploaded_file" />
+				<input type="submit" value="Upload" />
 			</div>
 		</form>
 	</div>
