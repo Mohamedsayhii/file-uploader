@@ -1,9 +1,22 @@
 const db = require('../database/queries');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'uploads');
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.originalname);
+	},
+});
+
+const upload = multer({ storage });
 
 exports.getHomepage = async (req, res) => {
 	const userId = req.session.passport.user;
 	const folders = await db.getAllFolders(userId);
-	res.render('homepage', { folders: folders });
+	const files = await db.getAllFiles();
+	res.render('homepage', { folders: folders, files: files });
 };
 
 exports.getCreateFolderForm = async (req, res) => {
@@ -29,6 +42,18 @@ exports.getUploadFileForm = async (req, res) => {
 	const folders = await db.getAllFolders(userId);
 	res.render('homepage', { showModal: 'file', folders: folders });
 };
+
+exports.postUploadFile = [
+	upload.single('uploaded_file'),
+	async function (req, res) {
+		await db.insertFile(
+			req.file.originalname,
+			req.file.size,
+			req.body.folders
+		);
+		res.redirect('/home');
+	},
+];
 
 exports.getLogout = (req, res, next) => {
 	req.logout((err) => {

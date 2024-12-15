@@ -22,6 +22,15 @@
 					</a>
 				</label>
 				<input type="file" name="uploaded_file" />
+				<label for="folders">Choose a folder:</label>
+				<select name="folders" id="folders">
+					<% if (locals.folders) { %> <% folders.forEach(folder => {
+					%>
+					<option value="<%= folder.name %>">
+						<%= folder.name %>
+					</option>
+					<% }) %> <% } %>
+				</select>
 				<input type="submit" value="Upload" />
 			</div>
 		</form>
