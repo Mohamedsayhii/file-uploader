@@ -64,8 +64,28 @@ const getAllFiles = async () => {
 	return files;
 };
 
+const getFilesByFolder = async (userId, folderName) => {
+	const { id: folderId } = await prisma.folder.findUnique({
+		where: {
+			name: folderName,
+			userId: userId,
+		},
+		select: {
+			id: true,
+		},
+	});
+
+	const files = await prisma.file.findMany({
+		where: {
+			folderId: folderId,
+		},
+	});
+
+	return files;
+};
+
 const insertFile = async (name, size, folderName) => {
-	const folderId = await prisma.folder.findUnique({
+	const { id: folderId } = await prisma.folder.findUnique({
 		where: {
 			name: folderName,
 		},
@@ -74,13 +94,15 @@ const insertFile = async (name, size, folderName) => {
 		},
 	});
 
+	console.log(folderId);
+
 	const uploadTime = new Date();
 
 	await prisma.file.create({
 		data: {
 			name: name,
 			size: size,
-			folderId: folderId.id,
+			folderId: folderId,
 			uploadTime: uploadTime,
 		},
 	});
@@ -94,5 +116,6 @@ module.exports = {
 	createFolder,
 	deleteFolder,
 	getAllFiles,
+	getFilesByFolder,
 	insertFile,
 };

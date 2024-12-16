@@ -31,6 +31,14 @@ exports.postCreateFolderForm = async (req, res) => {
 	res.redirect('/home');
 };
 
+exports.getFolder = async (req, res) => {
+	const { foldername } = req.params;
+	const userId = req.session.passport.user;
+	const folders = await db.getAllFolders(userId);
+	const files = await db.getFilesByFolder(userId, foldername);
+	res.render('homepage', { folders: folders, files: files });
+};
+
 exports.postDeleteFolder = async (req, res) => {
 	const { foldername } = req.params;
 	await db.deleteFolder(foldername);
