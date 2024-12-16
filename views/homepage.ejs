@@ -6,6 +6,7 @@
 		<link rel="icon" href="file-icon.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="/style.css" />
 		<link rel="stylesheet" href="/homepage.css" />
+		<link rel="stylesheet" href="/index-style.css" />
 		<title>Home - File Uploader</title>
 	</head>
 	<body>
@@ -75,8 +76,93 @@
 				</div>
 			</div>
 		</main>
-		<% if (locals.showModal) { %> <% if (showModal === 'folder') { %> <%-
-		include('folder-form') %> <% } else if (showModal === 'file') { %> <%-
-		include('file-form') %> <% } %> <% }%> <%- include('footer') %>
+		<div class="modal" id="folderModal">
+			<div class="modal-content">
+				<form action="/home/createfolder" method="post">
+					<div class="form-field">
+						<label
+							for="foldername"
+							style="
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+							"
+							>Folder Name
+							<span class="close" id="closeFolderModal"
+								>&times;</span
+							>
+						</label>
+						<input
+							type="text"
+							name="foldername"
+							id="foldername"
+							required
+						/>
+						<button type="submit">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="modal" id="fileModal">
+			<div class="modal-content">
+				<form
+					action="/home/uploadfile"
+					method="post"
+					enctype="multipart/form-data"
+				>
+					<div class="form-field">
+						<label
+							for="filename"
+							style="
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+							"
+							>File Name
+							<span class="close" id="closeFileModal"
+								>&times;</span
+							>
+						</label>
+						<input type="file" name="uploaded_file" />
+						<label for="folders">Choose a folder:</label>
+						<select name="folders" id="folders">
+							<% if (locals.folders) { %> <%
+							folders.forEach(folder => { %>
+							<option value="<%= folder.name %>">
+								<%= folder.name %>
+							</option>
+							<% }) %> <% } %>
+						</select>
+						<input type="submit" value="Upload" />
+					</div>
+				</form>
+			</div>
+		</div>
+		<%- include('footer') %>
 	</body>
+	<script defer>
+		function setupModal(modalId, buttonId, closeButtonId) {
+			const modal = document.getElementById(modalId);
+			const button = document.getElementById(buttonId);
+			const closeButton = document.getElementById(closeButtonId);
+
+			button.addEventListener('click', () => {
+				modal.style.display = 'block';
+			});
+
+			closeButton.addEventListener('click', () => {
+				modal.style.display = 'none';
+			});
+
+			// Close modal when clicking outside the modal content
+			window.addEventListener('click', (event) => {
+				if (event.target === modal) {
+					modal.style.display = 'none';
+				}
+			});
+		}
+
+		setupModal('folderModal', 'folderButton', 'closeFolderModal');
+		setupModal('fileModal', 'fileButton', 'closeFileModal');
+	</script>
 </html>

@@ -19,12 +19,6 @@ exports.getHomepage = async (req, res) => {
 	res.render('homepage', { folders: folders, files: files });
 };
 
-exports.getCreateFolderForm = async (req, res) => {
-	const userId = req.session.passport.user;
-	const folders = await db.getAllFolders(userId);
-	res.render('homepage', { showModal: 'folder', folders: folders });
-};
-
 exports.postCreateFolderForm = async (req, res) => {
 	const { foldername } = req.body;
 	await db.createFolder(foldername, req.session.passport.user);
@@ -45,12 +39,6 @@ exports.postDeleteFolder = async (req, res) => {
 	res.redirect('/home');
 };
 
-exports.getUploadFileForm = async (req, res) => {
-	const userId = req.session.passport.user;
-	const folders = await db.getAllFolders(userId);
-	res.render('homepage', { showModal: 'file', folders: folders });
-};
-
 exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
@@ -59,7 +47,7 @@ exports.postUploadFile = [
 			req.file.size,
 			req.body.folders
 		);
-		res.redirect('/home');
+		res.redirect(`/home/${req.body.folders}/show`);
 	},
 ];
 
