@@ -24,7 +24,7 @@ model Folder {
 
 model File {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String   @unique
   size       Float
   uploadTime DateTime
   folder     Folder?  @relation(fields: [folderId], references: [id])

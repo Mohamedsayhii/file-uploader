@@ -22,7 +22,7 @@
 							><h2><%= folder.name %></h2></a
 						>
 						<form
-							action="/home/<%= folder.name %>/delete"
+							action="/home/folder/<%= folder.name %>/delete"
 							method="post"
 						>
 							<button
@@ -54,7 +54,7 @@
 						<h2><%= file.size %></h2>
 						<h2><%= file.uploadTime %></h2>
 						<form
-							action="/home/<%= file.name %>/delete"
+							action="/home/file/<%= file.name %>/delete"
 							method="post"
 						>
 							<button

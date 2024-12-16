@@ -51,6 +51,12 @@ exports.postUploadFile = [
 	},
 ];
 
+exports.postDeleteFile = async (req, res) => {
+	const { filename } = req.params;
+	await db.deleteFile(filename);
+	res.redirect('/home');
+};
+
 exports.getLogout = (req, res, next) => {
 	req.logout((err) => {
 		if (err) {

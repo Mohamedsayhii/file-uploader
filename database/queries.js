@@ -108,6 +108,14 @@ const insertFile = async (name, size, folderName) => {
 	});
 };
 
+const deleteFile = async (filename) => {
+	await prisma.file.delete({
+		where: {
+			name: filename,
+		},
+	});
+};
+
 module.exports = {
 	createUser,
 	getUser,
@@ -118,4 +126,5 @@ module.exports = {
 	getAllFiles,
 	getFilesByFolder,
 	insertFile,
+	deleteFile,
 };
