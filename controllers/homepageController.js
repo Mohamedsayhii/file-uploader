@@ -35,7 +35,8 @@ exports.getFolder = async (req, res) => {
 
 exports.postDeleteFolder = async (req, res) => {
 	const { foldername } = req.params;
-	await db.deleteFolder(foldername);
+	const userId = req.session.passport.user;
+	await db.deleteFolder(userId, foldername);
 	res.redirect('/home');
 };
 
