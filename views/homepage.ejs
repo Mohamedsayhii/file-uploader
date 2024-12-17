@@ -49,10 +49,18 @@
 				</div>
 				<div class="folders">
 					<% if (locals.files) { %> <% files.forEach(file => { %>
+
 					<div class="folder">
 						<h2><%= file.name %></h2>
-						<h2><%= file.size %></h2>
-						<h2><%= file.uploadTime %></h2>
+						<h2>
+							<%if (file.size <1000000) {%> <%= (file.size /
+							1000).toFixed(2) %>KB <%} else {%> <%= (file.size /
+							1000000).toFixed(2) %>MB <%}%>
+						</h2>
+						<h2>
+							<%= new Intl.DateTimeFormat('en-GB').format(new
+							Date(file.uploadTime)) %>
+						</h2>
 						<form
 							action="/home/file/<%= file.name %>/delete"
 							method="post"
@@ -125,7 +133,7 @@
 						</label>
 						<input type="file" name="uploaded_file" />
 						<label for="folders">Choose a folder:</label>
-						<select name="folders" id="folders">
+						<select name="folders" id="folders" required>
 							<% if (locals.folders) { %> <%
 							folders.forEach(folder => { %>
 							<option value="<%= folder.name %>">
