@@ -47,10 +47,9 @@
 				<div class="content-header">
 					<h2>Files</h2>
 				</div>
-				<div class="folders">
+				<div class="files">
 					<% if (locals.files) { %> <% files.forEach(file => { %>
-
-					<div class="folder">
+					<div class="file">
 						<h2><%= file.name %></h2>
 						<h2>
 							<%if (file.size <1000000) {%> <%= (file.size /
