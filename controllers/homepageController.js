@@ -46,7 +46,8 @@ exports.postUploadFile = [
 		await db.insertFile(
 			req.file.originalname,
 			req.file.size,
-			req.body.folders
+			req.body.folders,
+			req.file
 		);
 		res.redirect(`/home/${req.body.folders}/show`);
 	},

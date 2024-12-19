@@ -116,7 +116,7 @@ const getFilesByFolder = async (userId, folderName) => {
 	return files;
 };
 
-const insertFile = async (name, size, folderName) => {
+const insertFile = async (name, size, folderName, file) => {
 	const { id: folderId } = await prisma.folder.findUnique({
 		where: {
 			name: folderName,
@@ -137,10 +137,12 @@ const insertFile = async (name, size, folderName) => {
 		},
 	});
 
-	const avatarFile = event.target.files[0];
 	const { data, error } = await supabase.storage
 		.from('uploads')
-		.upload('public/file.pdf', avatarFile);
+		.upload(`public/${name}`, file);
+
+	if (error) throw new Error(error.message);
+	return data;
 };
 
 const deleteFile = async (filename) => {
