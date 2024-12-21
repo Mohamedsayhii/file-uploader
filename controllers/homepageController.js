@@ -43,13 +43,23 @@ exports.postDeleteFolder = async (req, res) => {
 exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
-		await db.insertFile(
-			req.file.originalname,
-			req.file.size,
-			req.body.folders,
-			req.file
-		);
-		res.redirect(`/home/${req.body.folders}/show`);
+		const fileBuffer = req.file.buffer;
+		const { originalname } = req.file;
+		const { folders } = req.body;
+
+		const { data, error } = await supabase.storage
+			.from('uploads')
+			.upload(`public/${originalname}`, fileBuffer, {
+				contentType: req.file.mimetype,
+			});
+
+		if (error) {
+			console.error('Supabase upload error:', error.message);
+			return res.status(500).send('File upload failed');
+		}
+
+		await db.insertFile(originalname, req.file.size, folders, null);
+		res.redirect(`/home/${folders}/show`);
 	},
 ];
 
