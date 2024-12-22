@@ -1,6 +1,5 @@
 const db = require('../database/queries');
 const multer = require('multer');
-const path = require('node:path');
 
 const { createClient } = require('@supabase/supabase-js');
 
@@ -12,7 +11,7 @@ const supabase = createClient(
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, path.join(__dirname, 'uploads'));
+		cb(null, 'uploads');
 	},
 	filename: function (req, file, cb) {
 		cb(null, file.originalname);
@@ -52,22 +51,21 @@ exports.postDeleteFolder = async (req, res) => {
 exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
-		const fileBuffer = req.file.buffer;
-		const { originalname } = req.file;
-		const { folders } = req.body;
-
+		console.log(event.target.files[0]);
 		const { data, error } = await supabase.storage
 			.from('uploads')
-			.upload(`public/${originalname}`, fileBuffer, {
-				contentType: req.file.mimetype,
-			});
+			.upload(`public/${req.file.originalname}`, req.file);
 
 		if (error) {
 			console.error('Supabase upload error:', error.message);
 			return res.status(500).send('File upload failed');
 		}
 
-		await db.insertFile(originalname, req.file.size, folders, null);
+		await db.insertFile(
+			req.file.originalname,
+			req.file.size,
+			req.body.folders
+		);
 		res.redirect(`/home/${folders}/show`);
 	},
 ];

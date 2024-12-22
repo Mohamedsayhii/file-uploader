@@ -3,8 +3,6 @@ const bcryptjs = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
-
 const createUser = async (username, password) => {
 	const cryptedPassword = await bcryptjs.hash(password, 10);
 	await prisma.user.create({
@@ -110,7 +108,7 @@ const getFilesByFolder = async (userId, folderName) => {
 	return files;
 };
 
-const insertFile = async (name, size, folderName, file) => {
+const insertFile = async (name, size, folderName) => {
 	const { id: folderId } = await prisma.folder.findUnique({
 		where: {
 			name: folderName,
