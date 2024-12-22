@@ -3,13 +3,7 @@ const bcryptjs = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const { createClient } = require('@supabase/supabase-js');
 
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-	'https://lmoevozxjtkkdzgzhodp.supabase.co',
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtb2V2b3p4anRra2R6Z3pob2RwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjgyNTgsImV4cCI6MjA1MDEwNDI1OH0.p0kyQXeW5aXPuozRkqdvuS0v62Vgm4OV6ItOpYvCFqo'
-);
 
 const createUser = async (username, password) => {
 	const cryptedPassword = await bcryptjs.hash(password, 10);
@@ -116,7 +110,7 @@ const getFilesByFolder = async (userId, folderName) => {
 	return files;
 };
 
-const insertFile = async (name, size, folderName) => {
+const insertFile = async (name, size, folderName, file) => {
 	const { id: folderId } = await prisma.folder.findUnique({
 		where: {
 			name: folderName,

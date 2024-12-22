@@ -1,6 +1,14 @@
 const db = require('../database/queries');
 const multer = require('multer');
 
+const { createClient } = require('@supabase/supabase-js');
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+	'https://lmoevozxjtkkdzgzhodp.supabase.co',
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtb2V2b3p4anRra2R6Z3pob2RwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjgyNTgsImV4cCI6MjA1MDEwNDI1OH0.p0kyQXeW5aXPuozRkqdvuS0v62Vgm4OV6ItOpYvCFqo'
+);
+
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads');
