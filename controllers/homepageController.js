@@ -1,5 +1,6 @@
 const db = require('../database/queries');
 const multer = require('multer');
+const path = require('node:path');
 
 const { createClient } = require('@supabase/supabase-js');
 
@@ -11,7 +12,7 @@ const supabase = createClient(
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, 'uploads');
+		cb(null, path.join(__dirname, 'uploads'));
 	},
 	filename: function (req, file, cb) {
 		cb(null, file.originalname);
