@@ -1,13 +1,12 @@
 const db = require('../database/queries');
 const multer = require('multer');
 
-const { createClient } = require('@supabase/supabase-js');
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-	'https://lmoevozxjtkkdzgzhodp.supabase.co',
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtb2V2b3p4anRra2R6Z3pob2RwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjgyNTgsImV4cCI6MjA1MDEwNDI1OH0.p0kyQXeW5aXPuozRkqdvuS0v62Vgm4OV6ItOpYvCFqo'
-);
+function toArrayBuffer(buffer) {
+	return buffer.buffer.slice(
+		buffer.byteOffset,
+		buffer.byteOffset + buffer.byteLength
+	);
+}
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -21,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 exports.getHomepage = async (req, res) => {
-	const userId = req.session.passport.user;
+	const userId = req.user.id;
 	const folders = await db.getAllFolders(userId);
 	const files = await db.getAllFiles();
 	res.render('homepage', { folders: folders, files: files });
@@ -35,7 +34,7 @@ exports.postCreateFolderForm = async (req, res) => {
 
 exports.getFolder = async (req, res) => {
 	const { foldername } = req.params;
-	const userId = req.session.passport.user;
+	const userId = req.user.id;
 	const folders = await db.getAllFolders(userId);
 	const files = await db.getFilesByFolder(userId, foldername);
 	res.render('homepage', { folders: folders, files: files });
@@ -43,7 +42,7 @@ exports.getFolder = async (req, res) => {
 
 exports.postDeleteFolder = async (req, res) => {
 	const { foldername } = req.params;
-	const userId = req.session.passport.user;
+	const userId = req.user.id;
 	await db.deleteFolder(userId, foldername);
 	res.redirect('/home');
 };
@@ -51,22 +50,26 @@ exports.postDeleteFolder = async (req, res) => {
 exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
-		console.log(event.target.files[0]);
-		const { data, error } = await supabase.storage
-			.from('uploads')
-			.upload(`public/${req.file.originalname}`, req.file);
+		const userBucket = req.user.id;
+		const fileName = `${req.file.originalname}`;
+		const fileType = req.file.mimetype;
+		const filePath = `uploads/${fileName}`;
+		const fileData = req.file.buffer;
+		const buffer = toArrayBuffer(fileData);
+		const bucketExists = await supabase.bucketExists(userBucket);
 
-		if (error) {
-			console.error('Supabase upload error:', error.message);
-			return res.status(500).send('File upload failed');
+		if (!bucketExists) {
+			supabase.createBucket(userBucket);
 		}
+
+		supabase.uploadFileToSupabase(userBucket, filePath, buffer, fileType);
 
 		await db.insertFile(
 			req.file.originalname,
 			req.file.size,
 			req.body.folders
 		);
-		res.redirect(`/home/${folders}/show`);
+		res.redirect(`/home`);
 	},
 ];
 
