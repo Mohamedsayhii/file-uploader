@@ -28,7 +28,7 @@ exports.getHomepage = async (req, res) => {
 
 exports.postCreateFolderForm = async (req, res) => {
 	const { foldername } = req.body;
-	await db.createFolder(foldername, req.session.passport.user);
+	await db.createFolder(foldername, req.user.id);
 	res.redirect('/home');
 };
 
