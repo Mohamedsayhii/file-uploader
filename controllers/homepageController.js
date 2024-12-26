@@ -9,7 +9,7 @@ function toArrayBuffer(buffer) {
 	);
 }
 
-const storage = multer.memoryStorage({
+const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads');
 	},
@@ -51,31 +51,36 @@ exports.postDeleteFolder = async (req, res) => {
 exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
-		const userBucket = req.user.id;
-		const fileName = `${req.file.originalname}`;
-		const fileType = req.file.mimetype;
-		const filePath = `uploads/${fileName}`;
-		const fileData = req.file.buffer;
-		const buffer = toArrayBuffer(fileData);
-		const bucketExists = await supabase.bucketExists(userBucket);
+		try {
+			const fileName = `${req.file.originalname}`;
+			const fileType = req.file.mimetype;
+			const filePath = `uploads/${fileName}`;
+			const fileData = req.file.buffer;
 
-		if (!bucketExists) {
-			await supabase.createBucket(userBucket);
+			console.log('Uploading file:', fileName, 'Type:', fileType);
+
+			const bucketExists = await supabase.bucketExists('uploads');
+
+			if (!bucketExists) {
+				console.log('Bucket does not exist. Creating bucket...');
+				await supabase.createBucket('uploads');
+			}
+
+			await supabase.uploadFileToSupabase(filePath, fileData, fileType);
+
+			console.log('File uploaded successfully.');
+
+			await db.insertFile(
+				req.file.originalname,
+				req.file.size,
+				req.body.folders
+			);
+
+			res.redirect(`/home`);
+		} catch (error) {
+			console.error('Error during file upload:', error.message);
+			res.status(500).send('File upload failed.');
 		}
-
-		await supabase.uploadFileToSupabase(
-			userBucket,
-			filePath,
-			buffer,
-			fileType
-		);
-
-		await db.insertFile(
-			req.file.originalname,
-			req.file.size,
-			req.body.folders
-		);
-		res.redirect(`/home`);
 	},
 ];
 
