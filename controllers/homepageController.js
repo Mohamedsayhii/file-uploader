@@ -9,7 +9,7 @@ function toArrayBuffer(buffer) {
 	);
 }
 
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads');
 	},
@@ -60,10 +60,15 @@ exports.postUploadFile = [
 		const bucketExists = await supabase.bucketExists(userBucket);
 
 		if (!bucketExists) {
-			supabase.createBucket(userBucket);
+			await supabase.createBucket(userBucket);
 		}
 
-		supabase.uploadFileToSupabase(userBucket, filePath, buffer, fileType);
+		await supabase.uploadFileToSupabase(
+			userBucket,
+			filePath,
+			buffer,
+			fileType
+		);
 
 		await db.insertFile(
 			req.file.originalname,
