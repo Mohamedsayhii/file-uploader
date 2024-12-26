@@ -47,31 +47,24 @@ exports.postDeleteFolder = async (req, res) => {
 	res.redirect('/home');
 };
 
-exports.postUploadFile = [
-	upload.single('uploaded_file'),
-	async function (req, res) {
-		const userBucket = req.user.id;
-		const fileName = `${req.file.originalname}`;
-		const fileType = req.file.mimetype;
-		const filePath = `uploads/${fileName}`;
-		const fileData = req.file.buffer;
-		const buffer = toArrayBuffer(fileData);
-		const bucketExists = await supabase.bucketExists(userBucket);
+exports.postUploadFile = async (req, res) => {
+	const userBucket = 'req.user.id';
+	const fileName = `${req.file.originalname}`;
+	const fileType = req.file.mimetype;
+	const filePath = `../uploads/${fileName}`;
+	const fileData = req.file.buffer;
+	const buffer = toArrayBuffer(fileData);
+	const bucketExists = await supabase.bucketExists(userBucket);
 
-		if (!bucketExists) {
-			supabase.createBucket(userBucket);
-		}
+	if (!bucketExists) {
+		supabase.createBucket(userBucket);
+	}
 
-		supabase.uploadFileToSupabase(userBucket, filePath, buffer, fileType);
+	supabase.uploadFileToSupabase(userBucket, filePath, buffer, fileType);
 
-		await db.insertFile(
-			req.file.originalname,
-			req.file.size,
-			req.body.folders
-		);
-		res.redirect(`/home`);
-	},
-];
+	await db.insertFile(req.file.originalname, req.file.size, req.body.folders);
+	res.redirect(`/home`);
+};
 
 exports.postDeleteFile = async (req, res) => {
 	const { filename } = req.params;
