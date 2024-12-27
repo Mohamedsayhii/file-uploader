@@ -44,6 +44,22 @@ async function uploadFile(file) {
 	return data.path;
 }
 
+const downloadFile = async (bucketName, fileName) => {
+	const { data, error } = await supabase.storage
+		.from(bucketName)
+		.createSignedUrl(`uploads/${fileName}`, 2, {
+			download: true,
+		});
+
+	if (error) {
+		console.log('Failed to download', error);
+	} else {
+		console.log('Downloaded successfully', data);
+		return data.signedUrl;
+	}
+};
+
 module.exports = {
 	uploadFile,
+	downloadFile,
 };

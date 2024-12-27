@@ -62,10 +62,14 @@ exports.postUploadFile = [
 ];
 
 exports.postDownloadFile = async (req, res) => {
-	const { filename } = req.params;
-	const { data, error } = await supabase.storage
-		.from('uploads')
-		.download(`uploads/${filename}`);
+	try {
+		const { filename } = req.params;
+		const downloadLink = await supabase.downloadFile('uploads', filename);
+		res.redirect(downloadLink);
+	} catch (error) {
+		next(new Error('Failed to download file'));
+	}
+
 	res.redirect(`/home`);
 };
 
