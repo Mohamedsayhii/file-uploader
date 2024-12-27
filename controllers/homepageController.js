@@ -61,6 +61,14 @@ exports.postUploadFile = [
 	},
 ];
 
+exports.postDownloadFile = async (req, res) => {
+	const { filename } = req.params;
+	const { data, error } = await supabase.storage
+		.from('uploads')
+		.download(`uploads/${filename}`);
+	res.redirect(`/home`);
+};
+
 exports.postDeleteFile = async (req, res) => {
 	const { filename } = req.params;
 	await db.deleteFile(filename);
