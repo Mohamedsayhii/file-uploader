@@ -2,14 +2,7 @@ const multer = require('multer');
 const db = require('../database/queries');
 const supabase = require('../database/supabase');
 
-function toArrayBuffer(buffer) {
-	return buffer.buffer.slice(
-		buffer.byteOffset,
-		buffer.byteOffset + buffer.byteLength
-	);
-}
-
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads');
 	},
@@ -52,24 +45,7 @@ exports.postUploadFile = [
 	upload.single('uploaded_file'),
 	async function (req, res) {
 		try {
-			const userBucket = req.user.id;
-			const fileName = `${req.file.originalname}`;
-			const fileType = req.file.mimetype;
-			const filePath = `uploads/${fileName}`;
-			const fileData = req.file.buffer;
-			const buffer = toArrayBuffer(fileData);
-			const bucketExists = await supabase.bucketExists(userBucket);
-
-			if (!bucketExists) {
-				await supabase.createBucket(userBucket);
-			}
-
-			await supabase.uploadFileToSupabase(
-				userBucket,
-				filePath,
-				buffer,
-				fileType
-			);
+			await supabase.uploadFile(req.file);
 
 			await db.insertFile(
 				req.file.originalname,
